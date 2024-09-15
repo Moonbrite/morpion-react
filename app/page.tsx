@@ -1,7 +1,14 @@
 "use client";
-import { useState } from 'react';
+import React, { useState } from 'react';
 
-function Square({ value, onSquareClick }) {
+type SquareValue = 'X' | 'O' | null;
+
+interface SquareProps {
+    value: SquareValue;
+    onSquareClick: () => void;
+}
+
+function Square({ value, onSquareClick }: SquareProps) {
     return (
         <button className="square" onClick={onSquareClick}>
             {value}
@@ -9,8 +16,14 @@ function Square({ value, onSquareClick }) {
     );
 }
 
-function Board({ xIsNext, squares, onPlay }) {
-    function handleClick(i) {
+interface BoardProps {
+    xIsNext: boolean;
+    squares: SquareValue[];
+    onPlay: (nextSquares: SquareValue[]) => void;
+}
+
+function Board({ xIsNext, squares, onPlay }: BoardProps) {
+    function handleClick(i: number) {
         if (calculateWinner(squares) || squares[i]) {
             return;
         }
@@ -24,7 +37,7 @@ function Board({ xIsNext, squares, onPlay }) {
     }
 
     const winner = calculateWinner(squares);
-    let status;
+    let status: string;
     if (winner) {
         status = 'Gagnant: ' + winner;
     } else {
@@ -54,23 +67,23 @@ function Board({ xIsNext, squares, onPlay }) {
 }
 
 export default function Game() {
-    const [history, setHistory] = useState([Array(9).fill(null)]);
-    const [currentMove, setCurrentMove] = useState(0);
+    const [history, setHistory] = useState<SquareValue[][]>([Array(9).fill(null)]);
+    const [currentMove, setCurrentMove] = useState<number>(0);
     const xIsNext = currentMove % 2 === 0;
     const currentSquares = history[currentMove];
 
-    function handlePlay(nextSquares) {
+    function handlePlay(nextSquares: SquareValue[]) {
         const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
         setHistory(nextHistory);
         setCurrentMove(nextHistory.length - 1);
     }
 
-    function jumpTo(nextMove) {
+    function jumpTo(nextMove: number) {
         setCurrentMove(nextMove);
     }
 
     const moves = history.map((squares, move) => {
-        let description;
+        let description: string;
         if (move > 0) {
             description = 'Aller au coup #' + move;
         } else {
@@ -95,11 +108,10 @@ export default function Game() {
                 </div>
             </div>
         </>
-
     );
 }
 
-function calculateWinner(squares) {
+function calculateWinner(squares: SquareValue[]): SquareValue {
     const lines = [
         [0, 1, 2],
         [3, 4, 5],
