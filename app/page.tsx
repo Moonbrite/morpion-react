@@ -98,7 +98,7 @@ export default function Game() {
 
     return (
         <>
-            <h2>Le Tic-Tac-Toe de Ouf pour Palko</h2>
+            <h2>Le Tic-Tac-Toe de Ouf</h2>
             <div className="game">
                 <div className="game-board">
                     <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay}/>
