@@ -97,7 +97,7 @@ function Board({squares, onPlay}: BoardProps) {
 
 
     const winner = calculateWinner(squares);
-    let status: string;
+    let status ="";
     if (winner) {
         status = 'Gagnant: ' + winner;
     } else if (!squares.slice().includes(null)) {
